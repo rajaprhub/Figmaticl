@@ -2,10 +2,9 @@
     display: inline-flex;
     justify-content: space-between;
     align-items: left;
-    width: 10rem;
+    width: 9rem;
     height: 2rem;
     border-radius: 2rem;
-    overflow: hidden;
     background-color: white;
     border: 1px solid whitesmoke;
 }
@@ -19,8 +18,8 @@
     align-items: center;
     background-color: orange;
     border-radius: 1rem;
-    padding-left: 0.3rem;
-    padding-right: 0.3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
  .minusbtn{
