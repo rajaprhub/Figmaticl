@@ -13,7 +13,9 @@ export const Count = () => {
     <> 
            <div  className='btnsdiv'>  
             <button className='minusbtn'  disabled = {count == 1} onClick={reduce}> - </button>
-              <span className='nbacname'>{ resobj[count]} </span>
+             <section className='nbacname'>
+               <span>{ resobj[count]} </span>
+             </section>
             <button className='plusbtn' disabled = {count == 4}  onClick={add}> + </button>
          </div>
     </>

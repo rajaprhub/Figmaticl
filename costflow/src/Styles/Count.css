@@ -1,20 +1,28 @@
 .btnsdiv{
     display: inline-flex;
-    gap: 1rem;
     justify-content: space-between;
-    align-items: center;
-    width: 11rem;
+    align-items: left;
+    width: 10rem;
     height: 2rem;
     border-radius: 2rem;
     overflow: hidden;
     background-color: white;
     border: 1px solid whitesmoke;
 }
-.nbacname{
-    width: 7rem; 
-    border-radius: 2rem;
-    background-color: goldenrod;
-}
+ .nbacname{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* border: 1px solid red; */
+  } 
+  .nbacname > span{
+    align-items: center;
+    background-color: orange;
+    border-radius: 1rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+  }
+
  .minusbtn{
     border-radius: 50%;
     border: none;
