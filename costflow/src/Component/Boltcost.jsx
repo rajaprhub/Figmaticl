@@ -1,6 +1,6 @@
   import React,{ useState,useEffect }  from 'react'
   import "../Styles/Cost.css";
-
+  import { Count } from './Count';
 
  export const Boltcost = ( ) => {
 
@@ -40,41 +40,41 @@
         <tbody>
           <tr>
            <th><span className='pagenum'> 01. </span><span className='pagenames'>Home</span></th>
-           <td>Design</td>
-           <td>Interactions & Animations</td>
-           <td>Interaction</td>
+           <td>   <Count/> </td>
+           <td>   <Count/></td>
+           <td>   <Count/></td>
            <td>$200</td>
          </tr>
 
          <tr>
            <th><span className='pagenum'> 02. </span><span className='pagenames'>Service</span></th>
-           <td>Design</td>
-           <td>Interactions & Animations</td>
-           <td>Interaction</td>
+           <td>   <Count/></td>
+           <td>   <Count/></td>
+           <td>   <Count/></td>
            <td>$200</td>
          </tr>
 
          <tr>
            <th><span className='pagenum'>03. </span><span className='pagenames'>About Us</span></th>
-           <td>Design</td>
-           <td>Interactions & Animations</td>
-           <td>Interaction</td>
+           <td>   <Count/></td>
+           <td>   <Count/></td>
+           <td>   <Count/></td>
            <td>$200</td>
          </tr>
 
          <tr>
            <th><span className='pagenum'> 04. </span><span className='pagenames'>Partners</span></th>
-           <td>Design</td>
-           <td>Interactions & Animations</td>
-           <td>Interaction</td>
+           <td>   <Count/></td>
+           <td>   <Count/></td>
+           <td>   <Count/></td>
            <td>$200</td>
          </tr>
 
          <tr>
            <th><span className='pagenum'> 05. </span><span className='pagenames'>Contact Us</span></th>
-           <td>Design</td>
-           <td>Interactions & Animations</td>
-           <td>Interaction</td>
+           <td>   <Count/></td>
+           <td>   <Count/></td>
+           <td>   <Count/></td>
            <td>$200</td>
          </tr>
 
