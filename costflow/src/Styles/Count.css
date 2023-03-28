@@ -1,0 +1,27 @@
+.btnsdiv{
+    display: inline-flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    width: 11rem;
+    height: 2rem;
+    border-radius: 2rem;
+    overflow: hidden;
+    background-color: white;
+    border: 1px solid whitesmoke;
+}
+.nbacname{
+    width: 7rem; 
+    border-radius: 2rem;
+    background-color: orange;
+}
+ .minusbtn{
+    border-radius: 50%;
+    border: none;
+    background-color: white;
+  }
+  .plusbtn{
+    border-radius: 50%;
+    border: none;
+    background-color: white;
+  }

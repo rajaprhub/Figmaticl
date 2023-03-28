@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
          <h1> cost </h1>
-          <Count/>
+           <Count/>
           <Boltcost/>
     </div>
   );
