@@ -11,6 +11,10 @@
     align-items: center;
     padding: 0px;
    }
+  .numbinfos{
+    font-weight: 400;
+    font-size: 14px;
+   }
 
   .borderless td, .borderless th {
     border : none;

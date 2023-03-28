@@ -14,12 +14,16 @@
              <section  style={{ fontSize: "80px" ,fontWeight: "700"}}>
                5  <sub  style={{ fontSize: "15px", }} >  Pages </sub>
               </section>
-             <section> <span style={{ fontSize: "24px" ,fontWeight: "700"}}> $300</span> <br /> <span>Page Design</span>  </section>
-             <section>  <span style={{ fontSize: "24px" ,fontWeight: "700"}}> $200 </span> <br />  <span>Interactions & Animations</span>
+             <section> <span style={{ fontSize: "24px" ,fontWeight: "700"}}> $300</span> <br />
+              <span className='numbinfos'>Page Design</span>  </section>
+             <section>  <span style={{ fontSize: "24px" ,fontWeight: "700"}}> $200 </span> <br /> 
+              <span className='numbinfos' >Interactions & Animations</span>
              </section>
-             <section>  <span style={{ fontSize: "24px" ,fontWeight: "700"}}>  $100  </span> <br /> <span>CMS/Dynamic Data /Intagrations</span>
+             <section>  <span style={{ fontSize: "24px" ,fontWeight: "700"}}>  $100  </span> <br /> 
+             <span className='numbinfos'>CMS/Dynamic Data /Intagrations</span>
              </section>
-             <section>  <span style={{ fontSize: "18px" ,fontWeight: "700"}} >Sub Total</span>  <br /> <span style={{ fontSize: "40px" ,fontWeight: "700"}} >  $800</span>   </section>
+             <section>  <span style={{ fontSize: "18px" ,fontWeight: "700"}} >Sub Total</span>  <br /> 
+             <span style={{ fontSize: "40px" ,fontWeight: "700"}} >  $800</span>   </section>
         </div>
        <hr/>
        <table className="table borderless">
