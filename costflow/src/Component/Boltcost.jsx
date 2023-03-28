@@ -1,85 +1,83 @@
   import React,{ useState,useEffect }  from 'react'
-
-  import Table from 'react-bootstrap/Table';
-
   import "../Styles/Cost.css";
 
 
-export const Boltcost = ( ) => {
+ export const Boltcost = ( ) => {
 
-   
-  
-   
 
-    return (
-      <> 
-    
-     <div className= ' costbreak '>
-          
-         {/* <thead>
-            <tr>
-              <th  style={{ fontSize: "55px"}} >5
-                <sub  style={{ fontSize: "15px", }} >  Pages </sub>
-              </th>
-              <td> <span>  $300</span> <br /> <span>Page Design</span> </td>
-              <td> <span> $200 </span> <br />  <span>Interactions & Animations</span> </td>
-              <td> <span>  $100  </span> <br /> <span>CMS/Dynamic Data /Intagrations</span>  </td>
-              <th>  <span>Sub Total</span>  <br /> <span>  $800</span>  </th>
-            </tr>
-          </thead>
+
+ return (
+   <> 
+       <div className= 'container costbreak '>
+
+        <div className='container summary'>
+             <section  style={{ fontSize: "80px" ,fontWeight: "700"}}>
+               5  <sub  style={{ fontSize: "15px", }} >  Pages </sub>
+              </section>
+             <section> <span style={{ fontSize: "24px" ,fontWeight: "700"}}> $300</span> <br /> <span>Page Design</span>  </section>
+             <section>  <span style={{ fontSize: "24px" ,fontWeight: "700"}}> $200 </span> <br />  <span>Interactions & Animations</span>
+             </section>
+             <section>  <span style={{ fontSize: "24px" ,fontWeight: "700"}}>  $100  </span> <br /> <span>CMS/Dynamic Data /Intagrations</span>
+             </section>
+             <section>  <span style={{ fontSize: "18px" ,fontWeight: "700"}} >Sub Total</span>  <br /> <span style={{ fontSize: "40px" ,fontWeight: "700"}} >  $800</span>   </section>
+        </div>
+       <hr/>
+       <table className="table borderless">
+        <thead>
+              <tr>
+                <th>Pages </th>
+                <th>Design </th>
+                <th>Interactions & Animations </th>
+                <th>Interaction </th>
+                <th>Cost </th>
+              </tr>
+        </thead>
        
-          <hr/> */}
-
-         <Table  className=' borderless'>
-            
-          <thead > 
-            <tr>
-               <th className='dpages' >Pages </th>
-               <th>Design </th>
-               <th>Interactions & Animations </th>
-               <th className='dpages'>Interaction </th>
-               <th className='dcost'>Cost </th>
-            </tr>
-          </thead>
-                 {/* **************   */}
-         <tbody>
-         
+        <tbody>
           <tr>
-             <th className='dpages'> 01. <span className='pagenames'>Home</span></th>
+           <th><span className='pagenum'> 01. </span><span className='pagenames'>Home</span></th>
+           <td>Design</td>
+           <td>Interactions & Animations</td>
+           <td>Interaction</td>
+           <td>$200</td>
+         </tr>
 
-             <td> <div className='nbacdata'>
-                  <button className='reducebtn'
-                    
-                     >-</button>
-                  <span className='nbacchang' >None</span>
-                  <button className='incbtn' 
-                  >+</button>
-               </div></td>
+         <tr>
+           <th><span className='pagenum'> 02. </span><span className='pagenames'>Service</span></th>
+           <td>Design</td>
+           <td>Interactions & Animations</td>
+           <td>Interaction</td>
+           <td>$200</td>
+         </tr>
 
-               <td> <div className='nbacdata'>
-                  <button className='reducebtn'>-</button>
-                  <span className='nbacchang' > advance</span>
-                  <button className='incbtn'
-                  >+</button>
-               </div></td>
+         <tr>
+           <th><span className='pagenum'>03. </span><span className='pagenames'>About Us</span></th>
+           <td>Design</td>
+           <td>Interactions & Animations</td>
+           <td>Interaction</td>
+           <td>$200</td>
+         </tr>
 
-                <td> <div className='nbacdata'>
-                  <button className='reducebtn' >-</button>
-                  <span className='nbacchang' > complex</span>
-                  <button className='incbtn' 
-                  >+</button>
-               </div></td>
+         <tr>
+           <th><span className='pagenum'> 04. </span><span className='pagenames'>Partners</span></th>
+           <td>Design</td>
+           <td>Interactions & Animations</td>
+           <td>Interaction</td>
+           <td>$200</td>
+         </tr>
 
-             <td  className='dcost' >$200</td>
-          </tr>
+         <tr>
+           <th><span className='pagenum'> 05. </span><span className='pagenames'>Contact Us</span></th>
+           <td>Design</td>
+           <td>Interactions & Animations</td>
+           <td>Interaction</td>
+           <td>$200</td>
+         </tr>
 
-         </tbody>
-          
 
-              
+       </tbody>
 
-        </Table>
-
+       </table> 
     </div>
 
       </>

@@ -1,60 +1,55 @@
-
 .costbreak{
      margin: auto;
      background-color: #C3E6CD;
- 
-     width: 90%;
+     border-top-right-radius: 20px;
+     border-top-left-radius: 20px;
   }
-.borderless td, .borderless th {
+
+  .summary{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+   }
+
+  .borderless td, .borderless th {
     border : none;
- }
-
-
- .dpages{
+   }
  
-  font-weight: 700;
-  font-size: 20px;
-  color: #000000;
- }
- .dcost{
-
-  font-weight: 700;
-  font-size: 20px;
-  color: #000000;
- }
- .pagenames{
-  font-weight: 400;
-  font-size: 20px;
-  color: #000000;
- }
-
- .nbacdata{
-   display: inline-flex ;
-   gap:1px ;
-   align-items: center;
-   background-color: white;
-   border-radius: 10px;
- }
- .reducebtn{
-   border: none;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  padding: 10px ;
-  color: black;
- }
-
- .nbacchang{
-   border-radius: 10px;
-   background-color:  whitesmoke;
-   text-align: center;
-    width: 150px;
-    padding: 10px ;
+  thead tr {
+    font-weight: 700;
+    font-size: 20px;
   }
 
- .incbtn{
-  border: none;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  padding: 10px ;
-  color: black;
- }
+  thead th:first-child{   /* thead th */
+  text-align: start;      
+  }
+
+  thead > tr th:last-child{
+    text-align: end; /* color: red; */
+  }
+
+  tbody th:first-child{
+   text-align: start;    /* tbody */
+  }
+
+  tbody  tr  td:last-child{
+    text-align: end;
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  .pagenum{
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+   .pagenames{
+    font-weight: 400;
+    font-size: 20px;
+    color: #000000;
+   }
+
+
+
+
