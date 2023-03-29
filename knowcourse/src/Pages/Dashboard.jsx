@@ -14,25 +14,25 @@ export const Dashboard = () => {
     <>  
          <h1> Dashboard</h1>  
    <Box>
-   
-    <br />
     <Flex
-     mt={10}
+     mb={2}
+     p={1}
+     border={"1px solid gray"}
+     w="99%"
+     m='auto'
      gap={2}
-     w={"99%"}
-     margin={"auto"}
      flexDir={{ base: "column", sm: "column", md: "row" }}
     >
      <Box flex={1}>
           <Sidebar/>
      </Box>
 
-      <Box flex={3}>
+      <Box flex={6}>
          <Knowledge/>
       </Box>
  
     </Flex>
- </Box>
+  </Box>
 
          
 
