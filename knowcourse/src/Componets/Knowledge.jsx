@@ -13,84 +13,92 @@ import {   Box,
   Grid,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import styles from '../Styles/Knowledge.module.css'
+
+const property = {
+  imageUrl: 'https://bit.ly/2Z4KKcF',
+  imageAlt: 'Rear view of modern home with pool',
+  beds: 3,
+  baths: 2,
+  title: 'Modern home in city center in the heart of historic Los Angeles',
+  formattedPrice: '$1,900.00',
+  reviewCount: 34,
+  rating: 4,
+}
 
 
 
 let knowdata = [
   {
-    "id": 1,
-    "nametype": "Live",
-    "mainImage": "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
-    "title": "Sales",
-    "date": "23/03/2023",
-    "lessons": "2",
-    "duration": "15",
-    "knowtype": "sales"
+    id: 1,
+    nametype: "Live",
+    mainImage: "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
+    title: "Marketing",
+    date: "23/03/2023",
+    lessons: "2",
+    duration: "15",
+    knowtype: "Sales"
   },
   {
-    "id": 1,
-    "nametype": "Live",
-    "mainImage": "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
-    "title": "Sales",
-    "date": "23/03/2023",
-    "lessons": "2",
-    "duration": "15",
-    "knowtype": "marketing"
+    id: 2,
+    nametype: "Draft",
+    mainImage: "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
+    title: "Sales",
+    date: "23/03/2023",
+    lessons: "2",
+    duration: "15",
+     knowtype: "Sales"
   },
   {
-    "id": 1,
-    "nametype": "Live",
-    "mainImage": "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
-    "title": "Sales",
-   "date": "23/03/2023",
-    "lessons": "2",
-    "duration": "15",
-    "knowtype": "sales"
+    id:3,
+    nametype: "Archived",
+    mainImage: "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
+    title: "Sales",
+    date: "23/03/2023",
+    lessons: "2",
+    duration: "15",
+     knowtype: "Sales"
   },
   {
-    "id": 1,
-    "nametype": "Live",
-    "mainImage": "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
-    "title": "Sales",
-   "date": "23/03/2023",
-    "lessons": "2",
-    "duration": "15",
-    "knowtype": "marketing"
+    id: 4,
+    nametype: "Live",
+    mainImage: "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
+    title: "Marketing",
+    date: "23/03/2023",
+    lessons: "2",
+    duration: "15",
+     knowtype: "marketing"
   },
   {
-    "id": 1,
-    "nametype": "Live",
-    "mainImage": "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
-    "title": "Sales",
-    "date": "23/03/2023",
-    "lessons": "2",
-    "duration": "15",
-   "knowtype": "sales"
+     id: 5,
+     nametype: "Live",
+     mainImage: "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
+     title: "Sales",
+     date: "23/03/2023",
+     lessons: "2",
+     duration: "15",
+     knowtype: "sales"
   },
   {
-    "id": 1,
-    "nametype": "Live",
-    "mainImage": "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
-    "title": "Sales",
-     "date": "23/03/2023",
-    "lessons": "2",
-    "duration": "15",
-    "knowtype": "marketing"
-  },
+     id: 6,
+    nametype: "Live",
+     mainImage: "https://cdn-icons-png.flaticon.com/512/5234/5234318.png",
+     title: "Sales",
+     date: "23/03/2023",
+     lessons: "2",
+     duration: "15",
+     knowtype: "sales"
+   },
 
 ]
 
 
-
-
-
 export const Knowledge = () => {
-
 
   // const [kdata,setkdata] = useState([...kdata]) 
     
   return (
-    <div> 
+    <> 
       
          
        <Flex mb={3} h={16} justify={"space-between"} alignItems={'center'}  border={"1px solid blue"} >
@@ -106,9 +114,8 @@ export const Knowledge = () => {
 
          <Box mb={1} border={"1px solid red"}>
               
-         <Flex  m={2}  h={16} justify={"space-between"} alignItems={'center'}  border={"1px solid blue"} >
-         
-            <Box ml={3}>
+          <Flex  m={2}  h={16} justify={"space-between"} alignItems={'center'}  border={"1px solid gray"} >
+              <Box ml={3}>
              <Flex   justify={"space-around"} gap={5}  alignItems={"center"} >
                 <Text> All</Text>
                 <Text> Live</Text>
@@ -120,90 +127,32 @@ export const Knowledge = () => {
              <Box mr={2}>Input Field</Box>
           </Flex>
 
-         
-       <Box  m={2} mt={2}  p={2}  alignItems={"left"}  border={"1px solid blue"}>
+       <Box  m={2}  p={2} border={"1px solid blue"}>
+         <SimpleGrid   className={styles.maincarddiv} >
+          {knowdata.map((elem) => (
 
-          <Grid
-        templateColumns='repeat(4, 1fr)'
-        gap={10}
-        mr={8} 
-        // columns={{
-        //   base: 1,
-        //   sm: 2,
-        //   md: 2,
-        //   xl: 3,
-        //   "2xl": 3,
-        // }}
-        // w="75%"
-        // // margin={"auto"}
-        // ml={5}
-        // spacing={5}
-      >
-        {knowdata.map((elem) => (
-
-          <Box
-            key={elem.id}
-            border="1px solid red"
-            p={2}
-            h={280}
-            borderRadius={1}
-            textAlign="left"
+           <Box className={styles.procard}  key= {elem.id}
             // boxShadow={"rgba(0, 0, 0, 0.35) 0px 5px 15px"}
-          >
-            <Image src={elem.mainImage} w="100%" h={"50%"} />
-            <Box
-              fontSize={{
-                base: "18px",
-                sm: "12px",
-                md: "20px",
-                xl: "18px",
-                "2xl": "20px",
-              }}
-              mb={1}
-             
             >
-              {elem.title}
-            </Box>
+              <img   className={styles.imagebox}  src={elem.mainImage}/>
+              
+                  <div className={styles.Procardd} >
+                        <h5>  {elem.title} </h5>
+                         <h6> Last Updated : {elem.date} </h6>
+                    <div style={ {display:"flex", justifyContent : "space-between"}}>    
+                         <p>  Lesson : {elem.lessons}</p> 
+                         <p> Minutes : {elem.duration}</p>
+                    </div>
+               </div>
 
-            <Text
-              fontSize={{
-                sm: "12px",
-               }}
-              mb={1}
-            >
-              Last Updated : {elem.date}
-            </Text>
-            
-            <Flex  mb={2} gap={5} >
-            <Box
-              fontSize={{
-                sm: "14px",
-               }}
-              mb={1}
-            >
-              Lesson : {elem.lessons}
-            </Box>
-
-            <Box
-              fontSize={{
-                sm: "14px",
-               }}
-              mb={1}
-            >
-              Minutes  : {elem.duration}
-            </Box>
-             </Flex>
-           
-          
           </Box>
-        ))}
-      </Grid>
+         ))}
+        </SimpleGrid>
 
       </Box>
       
-
-        </Box>
+    </Box>
    
-    </div>
+    </>
   )
 }
