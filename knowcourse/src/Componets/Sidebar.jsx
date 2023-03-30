@@ -15,23 +15,23 @@ export const Sidebar = () => {
              <div className={styles.homeitems}>
                 <section className={styles.iconanames}>
                   <i class='fa fa-home'></i>
-                  <h5> DASHBOARD</h5>
+                  <h6> DASHBOARD</h6>
                 </section>
                 <section className={styles.iconanames}>
                 <i class="fa fa-graduation-cap"></i>
-                  <h5> KNOWLEDGE</h5>
+                  <h6> KNOWLEDGE</h6>
                 </section>
                 <section className={styles.iconanames}>
                 <i class="fa fa-graduation-cap"></i>
-                  <h5> MEMBERS</h5>
+                  <h6> MEMBERS</h6>
                 </section>
                 <section className={styles.iconanames}>
                 <i class='fa fa-home'></i>
-                  <h5> TEAMS</h5>
+                  <h6> TEAMS</h6>
                 </section>
                 <section className={styles.iconanames}>
                   <i class='fa fa-home'></i>
-                  <h5> CHAT</h5>
+                  <h6> CHAT</h6>
                 </section>
              </div>
 
@@ -39,15 +39,15 @@ export const Sidebar = () => {
              <div>
                 <section className={styles.iconanames}>
                 <i class="fa-solid fa-building"></i>  
-                  <h5> SETTINGS</h5>
+                  <h6> SETTINGS</h6>
                 </section>
                 <section className={styles.iconanames}>
                 <i class="fa-solid fa-building"></i>  
-                  <h5> COMPANY</h5>
+                  <h6> COMPANY</h6>
                 </section>
                 <section className={styles.iconanames}>
                 <i class="fa-solid fa-building"></i>  
-                  <h5> MY PROFILE</h5>
+                  <h6> MY PROFILE</h6>
                 </section>
              </div>
 
