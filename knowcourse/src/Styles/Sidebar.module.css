@@ -1,8 +1,33 @@
 
-.abovdiv{
-    border: 1px solid red;
+.sourcediv{
     display: flex;
+    /* border: 1px solid red; */
     flex-direction: column;
-    justify-content: space-between;
-    height: 60%;
+    gap: 410px;
+}
+
+
+.powreddiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+}
+.powerimg{
+    width: 65%;
+    height: 50px;
+}
+
+.homeitems{
+ margin-top: 5px;
+}
+.iconanames{
+    display: flex;
+     justify-content: left;
+     gap: 5px;
+     align-items: center;
+     padding-left: 5%;
+}
+.iconanames i{
+padding-bottom: 2%;
 }

@@ -1,0 +1,17 @@
+
+.dashbdiv{
+    /* border: 1px solid blue; */
+    display: flex;
+    padding: 5px;
+    gap: 5px;
+
+}
+
+.sidebardiv{
+    width: 20%;
+    background-color: black;
+    color: white;
+}
+.knowledgediv{
+    width: 80%;
+}
