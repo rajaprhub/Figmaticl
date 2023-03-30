@@ -190,8 +190,6 @@ export const Knowledge = () => {
           <Box border="1px" borderColor="gray.200" bg="gray" mr={2}>
             <select>
               <option>Select Team</option>
-              <option value="LH">Price: Low to High</option>
-              <option value="HL">Price: High to Low</option>
               <option></option>
             </select>
           </Box>
