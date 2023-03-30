@@ -153,12 +153,19 @@ export const Knowledge = () => {
 
           {knowdata.map((elem) => (
              <Box className={styles.procard}  key= {elem.id}
-             pb={3} 
+              p={2} pb={3} 
             // boxShadow={"rgba(0, 0, 0, 0.35) 0px 5px 15px"}
            >
-              <img   className={styles.imagebox}  src={elem.mainImage}/>
-               <div className={styles.Procardd} >
-                        <h6>  {elem.title} </h6>
+              <div className={styles.imagebox}  >
+                  <img   src={elem.mainImage}/>
+                  <div className= {styles.toprightnt } >
+                    <h6 >{elem.nametype}</h6>
+                  </div>
+               </div>
+           
+
+                 <div className={styles.Procardd} >
+                         <h6>  {elem.title} </h6>
                          <span className={styles.procarddate}> Last Updated : {elem.date} </span>
                     <Box pt={1}   pb={1} className={styles.duration}>    
                          <span>  Lesson : {elem.lessons}</span> 
@@ -168,7 +175,7 @@ export const Knowledge = () => {
                     <Box className={styles.protype}>    
                          <span> {elem.knowtype}</span> 
     
-                    </Box>
+                  </Box>
                </div>
 
           </Box>
