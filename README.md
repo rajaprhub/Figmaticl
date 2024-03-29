@@ -1,3 +1,4 @@
+
 // Parse the response JSON
 let jsonResponse;
 try {
@@ -28,22 +29,21 @@ if (jsonResponse) {
         csvContent += "Unknown Message\n";
     }
 
-    // Create data URI for CSV file
-    let csvDataUri = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
-
-    // Create temporary anchor element
-    let downloadLink = document.createElement("a");
-    downloadLink.href = csvDataUri;
-
-    // Set the download attribute with desired file name
+    // Set the CSV file name
     let fileName = "response_data.csv";
-    downloadLink.download = fileName;
 
-    // Trigger a click event to prompt download
-    downloadLink.click();
+    // Set the content type for the response to be CSV
+    pm.response.headers.add({
+        key: 'Content-Disposition',
+        value: `attachment; filename="${fileName}"`,
+    });
+    pm.response.headers.add({
+        key: 'Content-Type',
+        value: 'text/csv'
+    });
+
+    // Set the response body to the generated CSV content
+    pm.response.updateBody(csvContent);
 } else {
     console.log("No data to save.");
 }
-
-
-
