@@ -1,4 +1,5 @@
 // Parse the response JSON
+
 let jsonResponse;
 try {
     jsonResponse = pm.response.json();
@@ -9,7 +10,9 @@ try {
     });
 }
 
+
 // Check if jsonResponse is defined
+
 if (jsonResponse) {
     let csvContent = "";
 
@@ -28,32 +31,26 @@ if (jsonResponse) {
         csvContent += "Unknown Message\n";
     }
 
-    // Convert CSV content to Blob
-    const blob = new Blob([csvContent], {
-        type: "text/csv"
-    });
+    // Create data URI for CSV file
+    let csvDataUri = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
 
-    // Create object URL for the Blob
-    const url = URL.createObjectURL(blob);
-
-    // Create a temporary anchor element
-    const a = document.createElement("a");
-    document.body.appendChild(a);
-    a.style = "display: none";
-
-    // Set the href attribute to the object URL
-    a.href = url;
+    // Create temporary anchor element
+    let downloadLink = document.createElement("a");
+    downloadLink.href = csvDataUri;
 
     // Set the download attribute with desired file name
     let fileName = "response_data.csv";
-    a.download = fileName;
+    downloadLink.download = fileName;
 
     // Trigger a click event to prompt download
-    a.click();
+    downloadLink.click();
+} 
 
-    // Clean up - remove the temporary anchor
-    URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-} else {
+else {
     console.log("No data to save.");
 }
+
+
+
+
+
