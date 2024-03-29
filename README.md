@@ -1,3 +1,5 @@
+
+
 // Parse the response JSON
 let jsonResponse;
 try {
@@ -25,6 +27,17 @@ if (jsonResponse) {
     // Log the CSV content in the Postman console
     console.log("CSV Content:");
     console.log(csvContent);
+
+    // Convert jsonResponse to a JSON string
+    let jsonContent = JSON.stringify(jsonResponse, null, 2);
+
+    // Trigger download of JSON file
+    let fileName = "response_data.json";
+    let jsonDataUri = "data:application/json;charset=utf-8," + encodeURIComponent(jsonContent);
+    let downloadLink = document.createElement("a");
+    downloadLink.href = jsonDataUri;
+    downloadLink.download = fileName;
+    downloadLink.click();
 } else {
     console.log("No data to save.");
 }
