@@ -1,8 +1,5 @@
 
 
-
-
-
 // Parse the response JSON
 let jsonResponse;
 try {
@@ -33,18 +30,21 @@ if (jsonResponse) {
         csvContent += "Unknown Message\n";
     }
 
-    // Set the content type for the response to be CSV
-    pm.response.headers.add({
-        key: 'Content-Disposition',
-        value: 'attachment; filename=response_data.csv',
-    });
-    pm.response.headers.add({
-        key: 'Content-Type',
-        value: 'text/csv'
+    // Exclude log messages with URL links
+    const excludePatterns = [
+        /https?:\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?/gi
+    ];
+
+    let lines = csvContent.split('\n').filter(line => {
+        return !excludePatterns.some(pattern => line.match(pattern));
     });
 
-    // Send the CSV content as the response body
-    pm.sendResponse(csvContent);
+    // Reconstruct CSV content without URL log messages
+    csvContent = lines.join('\n');
+
+    // Log the filtered CSV content in the Postman console
+    console.log("Filtered CSV Content:");
+    console.log(csvContent);
 } else {
     console.log("No data to save.");
 }
