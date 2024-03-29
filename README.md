@@ -1,5 +1,3 @@
-
-
 // Parse the response JSON
 let jsonResponse;
 try {
@@ -31,13 +29,28 @@ if (jsonResponse) {
     // Convert jsonResponse to a JSON string
     let jsonContent = JSON.stringify(jsonResponse, null, 2);
 
-    // Trigger download of JSON file
+    // Convert JSON content to a data URI for download
     let fileName = "response_data.json";
     let jsonDataUri = "data:application/json;charset=utf-8," + encodeURIComponent(jsonContent);
-    let downloadLink = document.createElement("a");
-    downloadLink.href = jsonDataUri;
-    downloadLink.download = fileName;
-    downloadLink.click();
+
+    // Trigger download of JSON file using pm.sendRequest
+    pm.sendRequest({
+        url: jsonDataUri,
+        method: 'GET',
+        header: {
+            'Content-Type': 'application/json',
+            'Content-Disposition': 'attachment; filename=' + fileName
+        },
+        body: {
+            mode: 'raw'
+        }
+    }, function(err, res) {
+        if (err) {
+            console.error("Error downloading JSON file:", err);
+        } else {
+            console.log("JSON file downloaded successfully.");
+        }
+    });
 } else {
     console.log("No data to save.");
 }
