@@ -1,5 +1,3 @@
-
-
 // Parse the response JSON
 let jsonResponse;
 try {
@@ -15,35 +13,17 @@ try {
 if (jsonResponse) {
     let csvContent = "";
 
-    // Check the "message" field in the JSON response
-    if (jsonResponse.message === "SUCCESS" && jsonResponse.data && jsonResponse.data.ckycNumber && jsonResponse.data.firstName) {
-        // Structure for "SUCCESS" message
-        csvContent += "Message,CKYC Number,First Name\n";
-        csvContent += `${jsonResponse.message},${jsonResponse.data.ckycNumber},${jsonResponse.data.firstName}\n`;
-    } else if (jsonResponse.message && jsonResponse.data === null) {
-        // Structure for other messages with null data
-        csvContent += "Message\n";
-        csvContent += `${jsonResponse.message}\n`;
-    } else {
-        // Default structure if message is not recognized
-        csvContent += "Message\n";
-        csvContent += "Unknown Message\n";
-    }
+    // Check the fields you need from the JSON response
+    let message = jsonResponse.message || "Unknown Message";
+    let ckycNumber = jsonResponse.data && jsonResponse.data.ckycNumber ? jsonResponse.data.ckycNumber : "N/A";
+    let firstName = jsonResponse.data && jsonResponse.data.firstName ? jsonResponse.data.firstName : "N/A";
 
-    // Exclude log messages with URL links
-    const excludePatterns = [
-        /https?:\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?/gi
-    ];
+    // Create CSV content with the extracted fields
+    csvContent += "Message,CKYC Number,First Name\n";
+    csvContent += `${message},${ckycNumber},${firstName}\n`;
 
-    let lines = csvContent.split('\n').filter(line => {
-        return !excludePatterns.some(pattern => line.match(pattern));
-    });
-
-    // Reconstruct CSV content without URL log messages
-    csvContent = lines.join('\n');
-
-    // Log the filtered CSV content in the Postman console
-    console.log("Filtered CSV Content:");
+    // Log the CSV content in the Postman console
+    console.log("CSV Content:");
     console.log(csvContent);
 } else {
     console.log("No data to save.");
