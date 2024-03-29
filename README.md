@@ -1,5 +1,8 @@
 
 
+
+
+
 // Parse the response JSON
 let jsonResponse;
 try {
@@ -30,9 +33,6 @@ if (jsonResponse) {
         csvContent += "Unknown Message\n";
     }
 
-    // Convert CSV content to data URI for download
-    let csvDataUri = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
-
     // Set the content type for the response to be CSV
     pm.response.headers.add({
         key: 'Content-Disposition',
@@ -43,8 +43,8 @@ if (jsonResponse) {
         value: 'text/csv'
     });
 
-    // Set the response body as the CSV data URI
-    pm.response.send(csvDataUri);
+    // Send the CSV content as the response body
+    pm.sendResponse(csvContent);
 } else {
     console.log("No data to save.");
 }
