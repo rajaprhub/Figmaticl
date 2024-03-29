@@ -1,4 +1,5 @@
 
+
 // Parse the response JSON
 let jsonResponse;
 try {
@@ -29,21 +30,9 @@ if (jsonResponse) {
         csvContent += "Unknown Message\n";
     }
 
-    // Set the CSV file name
-    let fileName = "response_data.csv";
-
-    // Set the content type for the response to be CSV
-    pm.response.headers.add({
-        key: 'Content-Disposition',
-        value: `attachment; filename="${fileName}"`,
-    });
-    pm.response.headers.add({
-        key: 'Content-Type',
-        value: 'text/csv'
-    });
-
-    // Display the CSV content in the response body
-    pm.response.send(csvContent);
+    // Log the CSV content in the Postman console
+    console.log("CSV Content:");
+    console.log(csvContent);
 } else {
     console.log("No data to save.");
 }
