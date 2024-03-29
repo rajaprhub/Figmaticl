@@ -10,7 +10,6 @@
  
  https://designdashboard.netlify.app/
 
-
 // Parse the response JSON
 let jsonResponse;
 try {
