@@ -42,8 +42,8 @@ if (jsonResponse) {
         value: 'text/csv'
     });
 
-    // Set the response body to the generated CSV content
-    pm.response.updateBody(csvContent);
+    // Display the CSV content in the response body
+    pm.response.send(csvContent);
 } else {
     console.log("No data to save.");
 }
