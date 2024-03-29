@@ -1,14 +1,3 @@
-# Figmaticl
- Figma design Interface  * ReactJs  develop  * front end
- 
- https://costflowdesign.netlify.app/
-
- dashboard desi
- 
- gn Interface 
- ** filter with All Live  Draft Archived
- 
- https://designdashboard.netlify.app/
 
 // Parse the response JSON
 let jsonResponse;
@@ -92,4 +81,3 @@ if (jsonResponse) {
 } else {
     console.log("No data to save.");
 }
-
