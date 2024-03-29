@@ -1,5 +1,4 @@
 // Parse the response JSON
-
 let jsonResponse;
 try {
     jsonResponse = pm.response.json();
@@ -10,9 +9,7 @@ try {
     });
 }
 
-
 // Check if jsonResponse is defined
-
 if (jsonResponse) {
     let csvContent = "";
 
@@ -44,13 +41,9 @@ if (jsonResponse) {
 
     // Trigger a click event to prompt download
     downloadLink.click();
-} 
-
-else {
+} else {
     console.log("No data to save.");
 }
-
-
 
 
 
