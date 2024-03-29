@@ -1,38 +1,12 @@
 
 
-// Parse the response JSON
-let jsonResponse;
-try {
-    jsonResponse = pm.response.json();
-} catch (error) {
-    console.error("Error parsing JSON:", error);
-    pm.test("Error parsing JSON", function() {
-        pm.expect.fail("Error parsing JSON");
-    });
-}
+// Convert CSV content to data URI for download
+let csvDataUri = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
 
-// Check if jsonResponse is defined
-if (jsonResponse) {
-    let csvContent = "";
+// Create temporary anchor element for download
+let downloadLink = document.createElement("a");
+downloadLink.href = csvDataUri;
+downloadLink.download = "response_data.csv";
 
-    // Check the "message" field in the JSON response
-    if (jsonResponse.message === "SUCCESS" && jsonResponse.data && jsonResponse.data.ckycNumber && jsonResponse.data.firstName) {
-        // Structure for "SUCCESS" message
-        csvContent += "Message,CKYC Number,First Name\n";
-        csvContent += `${jsonResponse.message},${jsonResponse.data.ckycNumber},${jsonResponse.data.firstName}\n`;
-    } else if (jsonResponse.message && jsonResponse.data === null) {
-        // Structure for other messages with null data
-        csvContent += "Message\n";
-        csvContent += `${jsonResponse.message}\n`;
-    } else {
-        // Default structure if message is not recognized
-        csvContent += "Message\n";
-        csvContent += "Unknown Message\n";
-    }
-
-    // Log the CSV content in the Postman console
-    console.log("CSV Content:");
-    console.log(csvContent);
-} else {
-    console.log("No data to save.");
-}
+// Trigger click event to initiate download
+downloadLink.click();
