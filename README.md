@@ -1,28 +1,42 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MyPage.aspx.cs" Inherits="YourProjectName.Pages.MyPage" %>
+import React from 'react';
+import { useForm } from 'react-hook-form';
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Page</title>
-</head>
-<body>
-    <h1>Welcome to My Page!</h1>
-    <p>This is a sample ASP.NET Core .aspx page.</p>
-</body>
-</html>
+function App() {
+  const { register, handleSubmit, errors } = useForm();
 
+  const onSubmit = (data) => {
+    console.log(data); // Handle form submission
+  };
 
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input
+        type="text"
+        name="username"
+        ref={register({ required: true, minLength: 3 })}
+      />
+      {errors.username && errors.username.type === "required" && (
+        <span>Username is required</span>
+      )}
+      {errors.username && errors.username.type === "minLength" && (
+        <span>Username must be at least 3 characters</span>
+      )}
 
-using System;
-using System.Web.UI;
+      <input
+        type="password"
+        name="password"
+        ref={register({ required: true, minLength: 6 })}
+      />
+      {errors.password && errors.password.type === "required" && (
+        <span>Password is required</span>
+      )}
+      {errors.password && errors.password.type === "minLength" && (
+        <span>Password must be at least 6 characters</span>
+      )}
 
-namespace YourProjectName.Pages
-{
-    public partial class MyPage : Page
-    {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            // Code to execute when the page loads
-        }
-    }
+      <button type="submit">Submit</button>
+    </form>
+  );
 }
+
+export default App;
