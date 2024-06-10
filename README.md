@@ -1,10 +1,12 @@
 const excel = require('excel4node');
 
+const headingColumnNames = ["Name", "Email", "Mobile"]; // Define the constant column headers
+
 function saveJsonDataToExcel(jsonData, excelFilePath) {
     const wb = new excel.Workbook();
     const ws = wb.addWorksheet('Sheet 1');
 
-    const headingColumnNames = Object.keys(jsonData[0]);
+    // Write the constant column headers
     let headingColumnIndex = 1;
     headingColumnNames.forEach((heading) => {
         ws.cell(1, headingColumnIndex++).string(heading);
