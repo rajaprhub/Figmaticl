@@ -1,56 +1,27 @@
-const fs = require("fs");
-const path = require("path");
-const exceljs = require("exceljs");
+const excel = require('excel4node');
 
-const ckycbaseJsonFilePath = path.join(__dirname, "datas", "may_data.json");
-const wbckycExcelFilePath = path.join(__dirname, "uploads", "ckycexcel.xlsx");
+function saveJsonDataToExcel(jsonData, excelFilePath) {
+    const wb = new excel.Workbook();
+    const ws = wb.addWorksheet('Sheet 1');
 
-function saveckycdJSONToExcel() {
-  const xl = require("excel4node");
-  const wb = new xl.Workbook();
-  const ws = wb.addWorksheet(wbckycExcelFilePath);
-
-  try {
-    // Read the JSON data from formdata.json
-    const jsonData = fs.readFileSync(ckycbaseJsonFilePath, "utf8");
-    // const formData = JSON.parse(jsonData);
-
-    const formData = [
-      {
-        name: "Shadab Shaikh",
-        email: "shadab@gmail.com",
-        mobile: "1234567890",
-      },
-    ];
-
-    const headingColumnNames = ["Name", "Email", "Mobile"];
-    //Write Column Title in Excel file
+    const headingColumnNames = Object.keys(jsonData[0]);
     let headingColumnIndex = 1;
     headingColumnNames.forEach((heading) => {
-      ws.cell(1, headingColumnIndex++).string(heading);
+        ws.cell(1, headingColumnIndex++).string(heading);
     });
 
-
     let rowIndex = 2;
-    formData
-      .forEach((record) => {
+    jsonData.forEach((record) => {
         let columnIndex = 1;
-        Object.keys(record).forEach((columnName) => {
-          ws.cell(rowIndex, columnIndex++).string(record[columnName]);
+        Object.values(record).forEach((value) => {
+            ws.cell(rowIndex, columnIndex++).string(value);
         });
         rowIndex++;
+    });
 
-        return wb.xlsx.writeFile(excelFilePath);
-      })
-      .then(() => {
-        console.log("Data appended to Excel file successfully.");
-      })
-      .catch((error) => {
-        console.error("Error appending data to Excel file:", error);
-      });
-  } catch (error) {
-    console.error("Error reading JSON data:", error);
-  }
+    return wb.write(excelFilePath);
 }
 
-module.exports = { saveckycdJSONToExcel };
+module.exports = {
+    saveJsonDataToExcel: saveJsonDataToExcel
+};
