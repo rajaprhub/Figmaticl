@@ -1,93 +1,109 @@
 
-
-\db\index.js
-
-const sql = require("mssql");
-require("dotenv").config();
-
-const config = {
-  user: 'dev.user',
-  password: 'Server123@' ,
-  server: '10.107.48.18',
-  database: 'CholaMS_DigitalSIT',
-  port: process.env.PORT,
-  options: {
-    encrypt: true,
-    enableArithAbort: true,
-  },
-  pool : {
-    max: 10,
-    min: 0,
-    idleTimeoutMills : 30000
-  }
-};
-// const  Connection = require("tedious").poolPromise;
-const poolPromise = new sql.ConnectionPool(config)
- .connect()
-  .then((pool) => {
-    console.log("Connected to MSSQL");
-    return pool;
-  })
-  .catch((err) => {
-    console.error("Database connection failed:", err);
-    process.exit(1);
-  });
-
-module.exports = {
-  sql,
-  poolPromise,
-};
-
-
-\routes\user.js
-
-const express = require("express");
-const router = express.Router();
-const { sql, poolPromise } = require("../db");
-
-router.get("/:sp_code", async (req, res) => {
-  const sp_code = req.params.sp_code;
-  try {
-    const pool = await poolPromise;
-    const result = await pool
-      .request()
-      .input("sp_code", sql.VarChar, sp_code)
-      .query(
-        "SELECT IMD_Code from IMD_Code_sp_shaping WHERE sp_code = @sp_code"
-      );
-    if (!result.recordset || result.recordset.length === 0) {
-      return res.status(404).send(`IMD_Code not found for sp_code: ${sp_code}`);
+export const ckyc = async (proceedToBuy, cartId, state) => {
+    let obj = { journeyId: "", App_Ref_No: "", isFailure: false }
+    try {
+        let App_Ref_No = state.App_Ref_No
+        const result = await invoke.getKycValidationResult("agency")
+        if (!result.tobeByepassed) {
+            // if (!state.journeyId || !state.App_Ref_No) {
+                const response = await invoke.getFullCartContentsByCartId(cartId);
+                if (response) {
+                    const journeyDetail = await invoke.getJourneyDetails("pr", response[0].cartDetailsId);
+                    obj.journeyId = response[0].cartDetailsId
+                    if (journeyDetail) {
+                        const find = _.find(journeyDetail.preparedData, "ckycInfo")
+                        obj.preparedData = journeyDetail.preparedData
+                        if (find) {
+                            App_Ref_No = _.get(find, "ckycInfo.App_Ref_No", "")
+                            obj.App_Ref_No = App_Ref_No
+                        }
+                        const result = await setDetails(cartId)
+                        if (result) {
+                            obj = { ...obj, ...result }
+                        }
+                    }
+                }
+            // }
+            if (App_Ref_No) {
+                const data = await invoke.ckycAuth()
+                if (data && data.TokenKey) {
+                    const res = await invoke.ckycQuery(data.TokenKey, App_Ref_No)
+                    if (res && (res.Status.trim() == "Failure" || res.Status == null)) {
+                        obj.isFailure = true
+                    } else {
+                        proceedToBuy();
+                        return ""
+                    }
+                }
+            }
+        } else {
+            proceedToBuy();
+        }
+        return obj
+    } catch (err) {
+        console.log(err)
     }
-    res.json(result.recordset[0].IMD_Code);
-  } catch (err) {
-    console.error("Error fetching IMD_Code:", err);
-    res.status(500).send("Internal server error");
-  }
-});
+}
 
-module.exports = router;
-
-
-\server.js
-
-const express = require("express");
-const bodyParser = require("body-parser");
-const usersRoutes = require("./routes/user");
-require("dotenv").config();
-const app = express();
-const port = process.env.PORT || 5000;
-app.use(bodyParser.json());
-
-app.use("/imdcodebyspcode", usersRoutes);
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
-
-
-
-
-
-
-
-
+export const kycVerification = async (state, preparedData, setIsKycValid) => {
+    const obj = { status: "", data: {} }
+    const preData = _.cloneDeep(preparedData)
+    const kycRes = await kycValidation(state)
+    if (kycRes.check) {
+        setIsKycValid()
+        if (preparedData && preparedData.length) {
+            const name = _.find(preparedData, { key: "NAME" }).a
+            const mobile = _.find(preparedData, { key: "MOBILE" }).a
+            const gender = preparedData.find(ele => ele.key.includes("GENDER"))
+            const setGender = gender.key.split("-")[1]
+            let raw = {
+                "PrivateKey": config.constants.ckyc_privateKey,
+                "Verify_Type": "VERIFY_DEMOGRAPHY", //VERIFY or VERIFY_DEMOGRAPHY
+                "App_Ref_No": uuidv4(),
+                "Customer_Type": "I",
+                "Customer_Name": name[0] + " " + (name[1] ? name[1] + " " : "") + name[2],
+                "DOB_DOI": moment(new Date(state.dobForKyc)).format("DD-MM-YYYY"),
+                "Mobile_No": mobile,
+                "CKYC_No": state.kycDetail['CKYC'] || "",
+                "PAN_No": state.kycDetail['PAN CARD'] || "",
+                "Aadhar_No": state.kycDetail['AADHAAR CARD'] || "",
+                "DL_No": state.kycDetail['DRIVING LICENSE'] || "",
+                "Voter_ID": state.kycDetail['VOTER ID CARD'] || "",
+                "Passport_no": state.kycDetail['PASSPORT'] || "",
+                "Gender": setGender == "MALE" ? "M" : setGender == "FEMALE" ? "F" : "O",
+                "CIN": ""
+            }
+            return new Promise(resolve => {
+                actions.validateCkycStatus(raw, ((data, error) => {
+                    obj.data = data
+                    if (data.Status == "Failure") {
+                        obj.status = "Failure"
+                    }
+                    const find = _.find(preData, "ckycInfo")
+                    if (find) {
+                        const findIndex = _.findIndex(preData, "ckycInfo")
+                        if (findIndex !== -1) {
+                            preData.splice(findIndex, 1)
+                        }
+                    }
+                    preData.push({ ckycInfo: data })
+                    actions.registerJourney(
+                        config.constants.pylonInfo,
+                        contexts.getContext('journey'),
+                        state.journeyId,
+                        name[0] + " " + (name[1] ? name[1] + " " : "") + name[2], preData, "", "", "", "",
+                        (data) => {
+                            if (_.get(data, "cartId"))
+                                contexts.setContext("fabric-cart", data.cartId);
+                        }
+                    );
+                    obj.check = true
+                    return resolve(obj)
+                }))
+            });
+        }
+    } else {
+        return kycRes
+    }
+    return obj
+}
