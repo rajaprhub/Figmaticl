@@ -1,54 +1,7 @@
-
-export const ckyc = async (proceedToBuy, cartId, state) => {
-    let obj = { journeyId: "", App_Ref_No: "", isFailure: false }
-    try {
-        let App_Ref_No = state.App_Ref_No
-        const result = await invoke.getKycValidationResult("agency")
-        if (!result.tobeByepassed) {
-            // if (!state.journeyId || !state.App_Ref_No) {
-                const response = await invoke.getFullCartContentsByCartId(cartId);
-                if (response) {
-                    const journeyDetail = await invoke.getJourneyDetails("pr", response[0].cartDetailsId);
-                    obj.journeyId = response[0].cartDetailsId
-                    if (journeyDetail) {
-                        const find = _.find(journeyDetail.preparedData, "ckycInfo")
-                        obj.preparedData = journeyDetail.preparedData
-                        if (find) {
-                            App_Ref_No = _.get(find, "ckycInfo.App_Ref_No", "")
-                            obj.App_Ref_No = App_Ref_No
-                        }
-                        const result = await setDetails(cartId)
-                        if (result) {
-                            obj = { ...obj, ...result }
-                        }
-                    }
-                }
-            // }
-            if (App_Ref_No) {
-                const data = await invoke.ckycAuth()
-                if (data && data.TokenKey) {
-                    const res = await invoke.ckycQuery(data.TokenKey, App_Ref_No)
-                    if (res && (res.Status.trim() == "Failure" || res.Status == null)) {
-                        obj.isFailure = true
-                    } else {
-                        proceedToBuy();
-                        return ""
-                    }
-                }
-            }
-        } else {
-            proceedToBuy();
-        }
-        return obj
-    } catch (err) {
-        console.log(err)
-    }
-}
-
 export const kycVerification = async (state, preparedData, setIsKycValid) => {
     const obj = { status: "", data: {} }
-    const preData = _.cloneDeep(preparedData)
     const kycRes = await kycValidation(state)
+    const preData = _.cloneDeep(preparedData)
     if (kycRes.check) {
         setIsKycValid()
         if (preparedData && preparedData.length) {
@@ -61,7 +14,7 @@ export const kycVerification = async (state, preparedData, setIsKycValid) => {
                 "Verify_Type": "VERIFY_DEMOGRAPHY", //VERIFY or VERIFY_DEMOGRAPHY
                 "App_Ref_No": uuidv4(),
                 "Customer_Type": "I",
-                "Customer_Name": name[0] + " " + (name[1] ? name[1] + " " : "") + name[2],
+                "Customer_Name": name[0] + " " + (name[1] ? name[1] + " " : "") + name[2].trim(),
                 "DOB_DOI": moment(new Date(state.dobForKyc)).format("DD-MM-YYYY"),
                 "Mobile_No": mobile,
                 "CKYC_No": state.kycDetail['CKYC'] || "",
@@ -91,8 +44,10 @@ export const kycVerification = async (state, preparedData, setIsKycValid) => {
                         config.constants.pylonInfo,
                         contexts.getContext('journey'),
                         state.journeyId,
-                        name[0] + " " + (name[1] ? name[1] + " " : "") + name[2], preData, "", "", "", "",
-                        (data) => {
+                        name[0] + " " + (name[1] ? name[1] + " " : "") + name[2],
+                        preData,
+                        "", "", "", "", "", "",
+                        (error, data) => {
                             if (_.get(data, "cartId"))
                                 contexts.setContext("fabric-cart", data.cartId);
                         }
@@ -106,4 +61,56 @@ export const kycVerification = async (state, preparedData, setIsKycValid) => {
         return kycRes
     }
     return obj
+}
+
+export const ckyc = async (proceedToBuy, cartId, state) => {
+    let obj = { journeyId: "", App_Ref_No: "", isFailure: false, showPopup: false }
+    try {
+        const iblCheck = config.PartnerNames.includes(contexts.getContext('partnerName'))
+        if (!iblCheck) {
+            let App_Ref_No = state.App_Ref_No
+            const result = await invoke.getKycValidationResult("partner")
+            if (!result.tobeByepassed) {
+                if (!state.journeyId || !state.App_Ref_No) {
+                    const response = await invoke.getFullCartContentsByCartId(cartId);
+                    if (response) {
+                        const journeyDetail = await invoke.getJourneyDetails("pr", response[0].cartDetailsId);
+                        obj.journeyId = response[0].cartDetailsId
+                        if (journeyDetail) {
+                            const find = _.find(journeyDetail.preparedData, "ckycInfo")
+                            obj.preparedData = journeyDetail.preparedData
+                            if (find) {
+                                App_Ref_No = _.get(find, "ckycInfo.App_Ref_No", "")
+                                obj.App_Ref_No = App_Ref_No
+                            }
+                            const result = await setDetails(cartId)
+                            if (result) {
+                                obj.showPopup = true
+                                obj = { ...obj, ...result }
+                            }
+                        }
+                    }
+                }
+                if (App_Ref_No) {
+                    const data = await invoke.ckycAuth()
+                    if (data && data.TokenKey) {
+                        const res = await invoke.ckycQuery(data.TokenKey, App_Ref_No)
+                        if (res && (res.Status.trim() == "Failure" || res.Status == null)) {
+                            obj.isFailure = true
+                        } else {
+                            proceedToBuy();
+                            return "success"
+                        }
+                    }
+                }
+            } else {
+                proceedToBuy();
+            }
+        } else {
+            proceedToBuy();
+        }
+        return obj
+    } catch (err) {
+        console.log(err)
+    }
 }
