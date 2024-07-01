@@ -1,68 +1,3 @@
-export const kycVerification = async (state, preparedData, setIsKycValid) => {
-    const obj = { status: "", data: {} }
-    const kycRes = await kycValidation(state)
-    const preData = _.cloneDeep(preparedData)
-    if (kycRes.check) {
-        setIsKycValid()
-        if (preparedData && preparedData.length) {
-            const name = _.find(preparedData, { key: "NAME" }).a
-            const mobile = _.find(preparedData, { key: "MOBILE" }).a
-            const gender = preparedData.find(ele => ele.key.includes("GENDER"))
-            const setGender = gender.key.split("-")[1]
-            let raw = {
-                "PrivateKey": config.constants.ckyc_privateKey,
-                "Verify_Type": "VERIFY_DEMOGRAPHY", //VERIFY or VERIFY_DEMOGRAPHY
-                "App_Ref_No": uuidv4(),
-                "Customer_Type": "I",
-                "Customer_Name": name[0] + " " + (name[1] ? name[1] + " " : "") + name[2].trim(),
-                "DOB_DOI": moment(new Date(state.dobForKyc)).format("DD-MM-YYYY"),
-                "Mobile_No": mobile,
-                "CKYC_No": state.kycDetail['CKYC'] || "",
-                "PAN_No": state.kycDetail['PAN CARD'] || "",
-                "Aadhar_No": state.kycDetail['AADHAAR CARD'] || "",
-                "DL_No": state.kycDetail['DRIVING LICENSE'] || "",
-                "Voter_ID": state.kycDetail['VOTER ID CARD'] || "",
-                "Passport_no": state.kycDetail['PASSPORT'] || "",
-                "Gender": setGender == "MALE" ? "M" : setGender == "FEMALE" ? "F" : "O",
-                "CIN": ""
-            }
-            return new Promise(resolve => {
-                actions.validateCkycStatus(raw, ((data, error) => {
-                    obj.data = data
-                    if (data.Status == "Failure") {
-                        obj.status = "Failure"
-                    }
-                    const find = _.find(preData, "ckycInfo")
-                    if (find) {
-                        const findIndex = _.findIndex(preData, "ckycInfo")
-                        if (findIndex !== -1) {
-                            preData.splice(findIndex, 1)
-                        }
-                    }
-                    preData.push({ ckycInfo: data })
-                    actions.registerJourney(
-                        config.constants.pylonInfo,
-                        contexts.getContext('journey'),
-                        state.journeyId,
-                        name[0] + " " + (name[1] ? name[1] + " " : "") + name[2],
-                        preData,
-                        "", "", "", "", "", "",
-                        (error, data) => {
-                            if (_.get(data, "cartId"))
-                                contexts.setContext("fabric-cart", data.cartId);
-                        }
-                    );
-                    obj.check = true
-                    return resolve(obj)
-                }))
-            });
-        }
-    } else {
-        return kycRes
-    }
-    return obj
-}
-
 export const ckyc = async (proceedToBuy, cartId, state) => {
     let obj = { journeyId: "", App_Ref_No: "", isFailure: false, showPopup: false }
     try {
@@ -95,11 +30,15 @@ export const ckyc = async (proceedToBuy, cartId, state) => {
                     const data = await invoke.ckycAuth()
                     if (data && data.TokenKey) {
                         const res = await invoke.ckycQuery(data.TokenKey, App_Ref_No)
-                        if (res && (res.Status.trim() == "Failure" || res.Status == null)) {
-                            obj.isFailure = true
-                        } else {
-                            proceedToBuy();
-                            return "success"
+                        if (res) {
+                            if (res.Status.trim() == "Failure" || res.Status == null) {
+                                obj.isFailure = true
+                                // Handle failure state, do not proceed
+                                return obj; // Return failure state
+                            } else {
+                                proceedToBuy();
+                                return "success"; // Proceed with buying process
+                            }
                         }
                     }
                 }
@@ -109,8 +48,10 @@ export const ckyc = async (proceedToBuy, cartId, state) => {
         } else {
             proceedToBuy();
         }
-        return obj
+        return obj; // Return final state
     } catch (err) {
         console.log(err)
+        // Handle errors gracefully
+        return obj; // Return final state with error
     }
 }
