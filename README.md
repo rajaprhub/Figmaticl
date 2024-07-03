@@ -1,107 +1,88 @@
-        return (
-            <div className="round_l mx_-20 p-2 mb_-20 pb-3 mt-3">
-                <div className="d-inline-block w-100">
-                    <div className="form-group m-0 pull-left pt-2">
-                        <label>{this.props.data.label} <span class="px-2">|</span></label>
-                    </div>
-                    <div className="">
-                        <button type="button" disabled={this.props.coverType === null ? true : false} className="font_14 btn-link p-0 btn text-capitalize" onClick={this.toggleAddMember}>
-                            Manage Members
-                        </button>
-                    </div>
-                </div>
-                {this.state.memberData.length > 0 && (
-                    <>
-                        <Row className="btn_badge">
-                            <Col>{memberHeader}</Col>
+render() {
+        let membersList = [];
+        this.state.currentMembers.forEach((mmbr, index) => {
+            // mmbr.disabled = _.findIndex(this.props.RELC, function (o) { return o === initCap(mmbr.RELATIONSHIP) }) >= 0 ? false : true;
+            let a = mmbr["AGE"];
+            if (a < 1) {
+                a = a * 12;
+                a = Math.round(a);
+                a = "0." + a;
+            }
+            const cid = cuid();
+            let mmbrArray = []
+            mmbrArray.push(mmbr)
+
+            if (this.props.coverType === "familyfloater" && this.props.productCode === "2890") {
+
+                if (['son', 'daughter', 'self', 'wife', 'husband'].includes(mmbr.RELATIONSHIP)) {
+                    const mbrBox = (
+                        <Row className="row_col d-flex mb-1" key={mmbr.memberId}>
+                            <Col md={4}>{initCap(mmbr.RELATIONSHIP)}
+                                {(mmbr.RELATIONSHIP === "self" && this.props.productCode === "2890") && <span style={{ color: "red" }}>&nbsp;*</span>}
+                            </Col>
+                            <Col md={4} className="text-center">
+
+                                (Age: {a})
+                            </Col>
+                            <Col md={4} className="text-right">
+                                {this.props.productCode === "2890" ?
+                                    <input
+                                        type="checkbox"
+                                        id={cid}
+                                        // disabled={mmbr.disabled}
+                                        data-tailor-memberId={mmbr.memberId}
+                                        checked={mmbr.included ? mmbr.included : false}
+                                        onClick={this.includeExclude}
+                                    />
+                                    :
+                                    <input
+                                        type="checkbox"
+                                        id={cid}
+                                        // disabled={mmbr.disabled}
+                                        data-tailor-memberId={mmbr.memberId}
+                                        checked={mmbr.included ? mmbr.included : false}
+                                        onClick={this.includeExclude}
+                                    />
+                                }
+                            </Col>
                         </Row>
-                        {this.props.coverType === "individual" && this.state.showSI && (
-                            <>
-                                <Row className="mt-2">
-                                    <Col>Sum Insured</Col>
-                                </Row>
-                                <Row className="mt-1">
-                                    <Col>{memberbody}</Col>
-                                </Row>
-                            </>
-                        )}
-                        {this.props.coverType === "individual" && this.state.showSI && this.props.data.askDeductible && (
-                            <>
-                                {memberDeducts ?
-                                    <>
-                                        <Row className="mt-3">
-                                            <Col>Deductible</Col>
-                                        </Row>
-                                        <Row className="mt-1">
-                                            <Col>{memberDeducts}</Col>
-                                        </Row>
-                                    </>
-                                    : null}
-                            </>
-                        )}
-                    </>
-                )}
-                {this.props.coverType === "familyfloater" && this.state.showSI && (
-                    <>
-                        <Row className="mt-2">
-                            <Col>Sum Insured</Col>
-                        </Row>
-                        <Row className="mt-1 mb-2">
-                            <Col className="px-0 ml-3 normal_select dark">{floaterBody}</Col>
-                        </Row>
-                    </>
-                )}
-                {this.props.coverType === "familyfloater" && this.state.showSI && this.props.data.askDeductible && (
-                    <>
-                        {memberDeducts ?
-                            <>
-                                <Row style={{ marginTop: "30px" }}>
-                                    <Col>Deductible</Col>
-                                </Row>
-                                <Row style={{ marginTop: "10px" }}>
-                                    <Col>{memberDeducts}</Col>
-                                </Row>
-                            </>
-                            : null}
-                    </>
-                )}
-                {!this.state.showSI && (
-                    <Row className="my-2">
-                        <Col>{memberbody}</Col>
+                    );
+                    membersList.push(mbrBox);
+                }
+            } else {
+                const mbrBox = (
+                    <Row className="row_col d-flex mb-1" key={mmbr.memberId}>
+                        <Col md={4}>{initCap(mmbr.RELATIONSHIP)}
+                            {(mmbr.RELATIONSHIP === "self" && this.props.productCode === "2890") && <span style={{ color: "red" }}>&nbsp;*</span>}
+                        </Col>
+
+                        <Col md={4} className="text-center">
+                            (Age: {a})
+                        </Col>
+                        <Col md={4} className="text-right">
+                            {console.log(cid, 'mmbr')}
+                            {this.props.productCode === "2890" ?
+                                <input
+                                    type="checkbox"
+                                    id={cid}
+                                    // disabled={mmbr.disabled}
+                                    data-tailor-memberId={mmbr.memberId}
+                                    checked={mmbr.included ? mmbr.included : false}
+                                    onClick={this.includeExclude}
+                                />
+                                :
+                                <input
+                                    type="checkbox"
+                                    id={cid}
+                                    disabled={mmbr.disabled}
+                                    data-tailor-memberId={mmbr.memberId}
+                                    checked={mmbr.included ? mmbr.included : false}
+                                    onClick={this.includeExclude}
+                                />
+                            }
+                        </Col>
                     </Row>
-                )}
-                {addons}
-                {console.log(this.state.memberSelected, 'memberSelected state')
-                }                {this.state.addingMember && (
-                    <MemberList
-                        coverType={this.props.coverType}
-                        allowedMembers={this.props.data.relationshipList[this.props.coverType]}
-                        RELC={this.props.laws.RELC[this.props.coverType ? this.props.coverType : "individual"]}
-                        members={_.cloneDeep(this.state.memberData)}
-                        membersSelected={_.cloneDeep(this.state.memberSelected)}
-                        buildMemberList={this.buildMemberList}
-                        productCode={this.props.productCode}
-                        custData={this.props.custData}
-                        // NOIACT={this.props.laws.NOIACT}
-                        title="Select Members to be covered"
-                        isCoronaRakshak={this.props.isCoronaRakshak}
-                        onclose={() => this.setState({ addingMember: false })}
-                    />
-                )}
-                {this.state.nudge && (
-                    <MemberList
-                        coverType={this.props.coverType}
-                        allowedMembers={this.props.data.relationshipList[this.props.coverType]}
-                        RELC={this.props.laws.RELC[this.props.coverType]}
-                        members={_.cloneDeep(this.state.memberData)}
-                        membersSelected={this.state.memberSelected}
-                        buildMemberList={this.buildMemberList}
-                        // NOIACT={this.props.laws.NOIACT}
-                        title="Select Members to be covered"
-                        onclose={() => this.setState({ addingMember: false })}
-                    />
-                )}
-                {this.state.status.protectionLevelCode === "nudge" && <ProtectionLevel {...this.state.plp} />}
-            </div>
-        );
-    }
+                );
+                membersList.push(mbrBox);
+            }
+        });
